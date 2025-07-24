@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification - AdminHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .verify-main-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .verify-box {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px 0 rgba(30,77,183,0.07);
+            padding: 40px 32px 32px 32px;
+            max-width: 410px;
+            width: 100%;
+            text-align: center;
+        }
+        .verify-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .verify-desc {
+            color: #444;
+            font-size: 1.08rem;
+            margin-bottom: 18px;
+        }
+        .verify-email-label {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .verify-email-box {
+            display: inline-block;
+            background: #f3f6fa;
+            color: #2563eb;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-size: 1.08rem;
+            margin-bottom: 18px;
+            border: 1.5px solid #c7d6f3;
+        }
+        .verify-step {
+            background: #f3f6fa;
+            border-radius: 10px;
+            padding: 16px 16px 16px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .verify-step-number {
+            background: #2563eb;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .verify-step-content {
+            flex: 1;
+        }
+        .verify-step-title {
+            font-weight: 600;
+            font-size: 1.07rem;
+            margin-bottom: 2px;
+            color: #222;
+        }
+        .verify-step-desc {
+            color: #555;
+            font-size: 0.98rem;
+        }
+        .verify-btn-main {
+            background: linear-gradient(90deg, #2563eb 0%, #1e4db7 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.08rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin: 18px 0 10px 0;
+            transition: background 0.2s;
+        }
+        .verify-btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .verify-btn-secondary {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .verify-btn-secondary:last-child {
+            background: #e5e7eb;
+            color: #2563eb;
+            border: 1.5px solid #2563eb;
+        }
+        .verify-btn-secondary:disabled {
+            background: #b2b9c6;
+            color: #fff;
+            cursor: not-allowed;
+        }
+        .verify-status {
+            color: #22c55e;
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+        }
+        @media (max-width: 500px) {
+            .verify-box {
+                padding: 18px 4vw 18px 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-main-container">
+        <div class="verify-box">
+            <div class="verify-title">Email Verification</div>
+            <div class="verify-desc">
+                Check your email and click the verification link
+            </div>
+            <div class="verify-email-label">We've sent a verification link to:</div>
+            <div class="verify-email-box" id="userEmail"></div>
+            <div class="verify-step">
+                <div class="verify-step-number">1</div>
+                <div class="verify-step-content">
+                    <div class="verify-step-title">Check Your Email</div>
+                    <div class="verify-step-desc">Look for an email from us with the subject "Confirm your signup"</div>
+                </div>
+            </div>
+            <div class="verify-step">
+                <div class="verify-step-number">2</div>
+                <div class="verify-step-content">
+                    <div class="verify-step-title">Click the Link</div>
+                    <div class="verify-step-desc">Click the "Confirm your signup" button in the email</div>
+                </div>
+            </div>
+            <div class="verify-step">
+                <div class="verify-step-number">3</div>
+                <div class="verify-step-content">
+                    <div class="verify-step-title">Sign In</div>
+                    <div class="verify-step-desc">Once verified, you can sign in to your account</div>
+                </div>
+            </div>
+            <button class="verify-btn-main" id="checkStatusBtn">Check Verification Status</button>
+            <div style="color:#888;font-size:0.98rem;margin:10px 0 0 0;">Didn't receive the email?</div>
+            <div class="verify-btn-row">
+                <button class="verify-btn-secondary" id="resendBtn">Resend Email</button>
+                <button class="verify-btn-secondary" style="background:#e5e7eb;color:#2563eb;border:1.5px solid #2563eb;" onclick="window.location.href='signup.html'">Back to Sign Up</button>
+            </div>
+            <div class="verify-status" id="successMsg">Verification email sent!</div>
+        </div>
+    </div>
+    <script>
+        // Simulate resend email
+        document.getElementById('resendBtn').addEventListener('click', function() {
+            this.disabled = true;
+            document.getElementById('successMsg').style.display = 'block';
+            setTimeout(() => {
+                this.disabled = false;
+                document.getElementById('successMsg').style.display = 'none';
+            }, 2500);
+        });
+        // Simulate check verification status
+        document.getElementById('checkStatusBtn').addEventListener('click', function() {
+            alert('Checking verification status... (implement backend logic here)');
+        });
+        // Show email in the page
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const email = params.get('email');
+            if(email) document.getElementById('userEmail').textContent = email;
+        };
+        document.getElementById('checkStatusBtn').onclick = function() {
+            // Simulate verification, then redirect
+            window.location.href = "dashboard.html";
+        };
+    </script>
+</body>
+</html>
